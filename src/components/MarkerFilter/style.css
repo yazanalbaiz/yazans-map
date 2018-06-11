@@ -4,8 +4,20 @@ input {
     font-family: 'Cairo', sans-serif;
     text-align: center;
     font-size: 1em;
+    color: rgb(210, 147, 147);
 }
 
 input:focus {
     outline-color: rgb(194, 0, 0);
+}
+
+::placeholder {
+    color: rgb(210, 147, 147);
+    /* Firefox needed opacity */
+    opacity: 1;
+}
+
+/* For Cross Browser Support */
+:-ms-input-placeholder, ::-ms-input-placeholder {
+    color: rgb(210, 147, 147);
 }
