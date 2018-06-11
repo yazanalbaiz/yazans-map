@@ -10,7 +10,8 @@
     "react-dom": "^16.4.0",
     "react-google-maps": "^9.4.5",
     "react-media": "^1.8.0",
-    "react-scripts": "1.1.4"
+    "react-scripts": "1.1.4",
+    "sort-by": "^1.2.0"
   },
   "scripts": {
     "start": "react-scripts start",

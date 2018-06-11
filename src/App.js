@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
 import { stack as Menu } from 'react-burger-menu';
 import escapeRegExp from 'escape-string-regexp';
+//To sort the locations after revealing info
+import sortBy from 'sort-by';
+
 import Map from './components/Map';
 import MarkerFilter from './components/MarkerFilter';
 
@@ -12,35 +15,62 @@ class App extends Component {
     query: '',
     locations: [
       {
+        id: 0,
         name: 'Pathé City Cinema',
-        infoShown: false,
+        infoShown: true,
         info: null,
+        position: { lat:  52.363420, lng: 4.883704 }
       },
       {
+        id: 1,
         name: 'The Bulldog Palace',
-        infoShown: false,
+        infoShown: true,
         info: null,
+        position: { lat: 52.364021, lng: 4.883311 }
       },
       {
+        id: 2,
         name: 'Kwakman Bakery',
-        infoShown: false,
+        infoShown: true,
         info: null,
+        position: { lat: 52.364829,  lng: 4.884283 }
       },
       {
+        id: 3,
         name: 'Tandoor Indian Restaurant',
-        infoShown: false,
+        infoShown: true,
         info: null,
+        position: { lat: 52.363886, lng: 4.881300 }
       },
       {
+        id: 4,
         name: 'Hampshire American Hotel',
-        infoShown: false,
+        infoShown: true,
         info: null,
+        position: { lat: 52.364974, lng: 4.883029 }
       }
     ]
   }
 
   handleInput = (e) => {
       this.setState({ query: e.target.value });
+  }
+
+  triggerInfo = (location) => {
+    const cutLocations = this.state.locations.filter(loc => loc.id !== location.id);
+
+    const locations = cutLocations.concat({
+      ...location,
+      infoShown: !location.infoShown
+    })
+    
+    locations.sort(sortBy('id'));
+
+    this.setState({ locations });
+  }
+
+  triggerSoloInfo = (location) => {
+    //To trigger list clicks
   }
 
   render() {
@@ -75,7 +105,16 @@ class App extends Component {
             
             <ul className='locations-list'>
               {shownLocations.map(location => (
-                <li tabindex='0' aria-role='button' className='list-location'>{ location.name }</li>
+                <li 
+                  tabIndex='0' 
+                  //Using ARIA role for A11y
+                  role='button' 
+                  className='list-location'
+                  key={ location.id }
+                  onClick={() => this.triggerInfo(location)}
+                >
+                  { location.name }
+                </li>
               ))}
             </ul>
           </Menu>
@@ -87,6 +126,8 @@ class App extends Component {
           mapElement={ <div style={{height: '100%'}}/> }
           googleMapURL='https://maps.googleapis.com/maps/api/js?key=AIzaSyDLX20hiAwtHZ60qd92XrTZE_Kz8TqRJ40&v=3'
           className='box-2'
+          locations={ shownLocations }
+          triggerInfo={this.triggerInfo}
         />
       </div>
     );
