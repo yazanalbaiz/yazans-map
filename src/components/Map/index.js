@@ -13,6 +13,9 @@ class Map extends Component {
         >
             { locations.map(location => (
                 <Marker 
+                    icon={{
+                        url: location.icon
+                    }}
                     key={ location.id } 
                     position={ location.position }
                     onClick={() => triggerInfo(location) }

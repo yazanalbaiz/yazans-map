@@ -1,14 +1,21 @@
+//NPM Modules
 import React, { Component } from 'react';
 import { stack as Menu } from 'react-burger-menu';
 import escapeRegExp from 'escape-string-regexp';
-//To sort the locations after revealing info
-import sortBy from 'sort-by';
-
+import sortBy from 'sort-by'; //To sort arrays
+//Componenets
 import Map from './components/Map';
 import MarkerFilter from './components/MarkerFilter';
-
+//Styles
 import './App.css';
 import { MapStyles } from './MapStyles';
+//icons
+import cake from './icons/cake.svg';
+import cafe from './icons/cafe.svg';
+import hotel from './icons/hotel.svg';
+import movie from './icons/movie.svg';
+import restaurant from './icons/restaurant.svg';
+
 
 class App extends Component {
   state = {
@@ -19,35 +26,40 @@ class App extends Component {
         name: 'Pathé City Cinema',
         infoShown: true,
         info: null,
-        position: { lat:  52.363420, lng: 4.883704 }
+        position: { lat:  52.363420, lng: 4.883704 },
+        icon: movie
       },
       {
         id: 1,
         name: 'The Bulldog Palace',
         infoShown: true,
         info: null,
-        position: { lat: 52.364021, lng: 4.883311 }
+        position: { lat: 52.364021, lng: 4.883311 },
+        icon: cafe
       },
       {
         id: 2,
         name: 'Kwakman Bakery',
         infoShown: true,
         info: null,
-        position: { lat: 52.364829,  lng: 4.884283 }
+        position: { lat: 52.364829,  lng: 4.884283 },
+        icon: cake
       },
       {
         id: 3,
-        name: 'Tandoor Indian Restaurant',
-        infoShown: true,
-        info: null,
-        position: { lat: 52.363886, lng: 4.881300 }
-      },
-      {
-        id: 4,
         name: 'Hampshire American Hotel',
         infoShown: true,
         info: null,
-        position: { lat: 52.364974, lng: 4.883029 }
+        position: { lat: 52.363886, lng: 4.881300 },
+        icon: hotel
+      },
+      {
+        id: 4,
+        name: 'Tandoor Indian Restaurant',
+        infoShown: true,
+        info: null,
+        position: { lat: 52.364974, lng: 4.883029 },
+        icon: restaurant
       }
     ]
   }
