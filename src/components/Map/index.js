@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { GoogleMap, Marker, InfoWindow, withScriptjs, withGoogleMap } from 'react-google-maps';
 
+import './style.css'
+
 class Map extends Component {
 
     render() {
@@ -14,7 +16,8 @@ class Map extends Component {
             { locations.map(location => (
                 <Marker 
                     icon={{
-                        url: location.icon
+                        url: location.icon,
+                        color:  'rgb(210, 147, 147)'
                     }}
                     key={ location.id } 
                     position={ location.position }
@@ -23,7 +26,7 @@ class Map extends Component {
                 >
                     {location.infoShown && (
                         <InfoWindow>
-                            <h4>{ location.name }</h4>
+                            <h4 className='info-header'>{ location.name }</h4>
                         </InfoWindow>
                     )}
                 </Marker>
