@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { stack as Menu } from 'react-burger-menu';
+import escapeRegExp from 'escape-string-regexp';
 import Map from './components/Map';
 import MarkerFilter from './components/MarkerFilter';
 
@@ -23,6 +24,17 @@ class App extends Component {
   }
 
   render() {
+    const { locations, query } = this.state;
+
+    let shownLocations;
+
+    if (query) {
+      const match = new RegExp(escapeRegExp(query), 'i');
+      shownLocations = locations.filter(location => match.test(location));
+    } else {
+      shownLocations = locations;
+    }
+
     return (
       <div className='container'>
         <div className='box-1'>
@@ -36,13 +48,13 @@ class App extends Component {
             <li className='bm-header'>Yazan's Leidseplein Bangers</li>
             <li className='bm-input'>
               <MarkerFilter
-                query={ this.state.query }
+                query={ query }
                 handleInput={ this.handleInput }
               />
             </li>
             
             <ul className='locations-list'>
-              {this.state.locations.map(location => (
+              {shownLocations.map(location => (
                 <li tabindex='0' aria-role='button' className='list-location'>{ location }</li>
               ))}
             </ul>
