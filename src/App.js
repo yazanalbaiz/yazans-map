@@ -62,7 +62,7 @@ class App extends Component {
     const locations = cutLocations.concat({
       ...location,
       infoShown: !location.infoShown
-    })
+    });
     
     locations.sort(sortBy('id'));
 
@@ -70,7 +70,25 @@ class App extends Component {
   }
 
   triggerSoloInfo = (location) => {
-    //To trigger list clicks
+    const newLocation = {
+      ...location,
+      infoShown: true
+    };
+
+    const cutLocation = this.state.locations.filter(loc => (
+      loc.id !== location.id
+    )).map(loc => (
+      {
+        ...loc,
+        infoShown: false
+      }
+    ));
+
+    const locations = cutLocation.concat(newLocation);
+
+    locations.sort(sortBy('id'));
+
+    this.setState({ locations });
   }
 
   render() {
@@ -111,7 +129,7 @@ class App extends Component {
                   role='button' 
                   className='list-location'
                   key={ location.id }
-                  onClick={() => this.triggerInfo(location)}
+                  onClick={() => this.triggerSoloInfo(location)}
                 >
                   { location.name }
                 </li>
