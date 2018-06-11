@@ -20,12 +20,13 @@
 }
 
 .bm-input {
-    margin-top: 40px;
+    margin-top: 1em;
     width: 100%;
 }
 
 .locations-list {
     list-style-type: none;
+    margin-top: 0;
 }
 
 .list-location {

@@ -11,11 +11,31 @@ class App extends Component {
   state = {
     query: '',
     locations: [
-      'Pathé City Cinema',
-      'The Bulldog Palace',
-      'Kwakman Bakery',
-      'Tandoor Indian Restaurant',
-      'Hampshire American Hotel'
+      {
+        name: 'Pathé City Cinema',
+        infoShown: false,
+        info: null,
+      },
+      {
+        name: 'The Bulldog Palace',
+        infoShown: false,
+        info: null,
+      },
+      {
+        name: 'Kwakman Bakery',
+        infoShown: false,
+        info: null,
+      },
+      {
+        name: 'Tandoor Indian Restaurant',
+        infoShown: false,
+        info: null,
+      },
+      {
+        name: 'Hampshire American Hotel',
+        infoShown: false,
+        info: null,
+      }
     ]
   }
 
@@ -30,7 +50,7 @@ class App extends Component {
 
     if (query) {
       const match = new RegExp(escapeRegExp(query), 'i');
-      shownLocations = locations.filter(location => match.test(location));
+      shownLocations = locations.filter(location => match.test(location.name));
     } else {
       shownLocations = locations;
     }
@@ -55,7 +75,7 @@ class App extends Component {
             
             <ul className='locations-list'>
               {shownLocations.map(location => (
-                <li tabindex='0' aria-role='button' className='list-location'>{ location }</li>
+                <li tabindex='0' aria-role='button' className='list-location'>{ location.name }</li>
               ))}
             </ul>
           </Menu>
