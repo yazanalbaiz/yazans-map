@@ -1,0 +1,38 @@
+.container {
+    display: flex;
+    align-items: flex-start;
+}
+
+.box-1 {
+    flex: 1;
+    order: 0;
+}
+
+.box-2 {
+    flex: 2;
+    order: 1;
+}
+
+.bm-input {
+    margin-top: 40px;
+    width: 100%;
+}
+
+.locations-list {
+    list-style-type: none;
+}
+
+.list-location {
+    margin: 48px 0px 48px 0px;
+}
+
+.list-location:hover {
+    color: rgb(194, 0, 0);
+    cursor: pointer;
+}
+
+.list-location:focus {
+    color: rgb(194, 0, 0);
+    background-color: white;
+    outline: none;
+}
