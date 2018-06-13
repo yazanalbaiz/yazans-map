@@ -20,23 +20,8 @@ import restaurant from './icons/restaurant.svg';
 
 
 class App extends Component {
-  componentWillMount = () => {
-    //I'm using async/await syntax to ensure that the promise resovles
-    const locationPromises = this.state.locations.map(async loc => {
-      let info;
-
-      await FoursquareAPI.getInfo(loc)
-        .then(res => info = res);
-      return {
-        ...loc,
-        info
-      };
-    })
-
-    Promise.all(locationPromises).then(locations => this.setState({ locations }));
-  }
-  
   state = {
+    errorShown: false,
     query: '',
     locations: [
       {
@@ -110,6 +95,29 @@ class App extends Component {
         icon: restaurant
       }
     ]
+  }
+
+  componentWillMount = async () => {
+    //I'm using async/await syntax to ensure that the promise resovles
+    const locationPromises = this.state.locations.map(async loc => {
+      let info;
+
+      await FoursquareAPI.getInfo(loc)
+        .then(res => info = res);
+      return {
+        ...loc,
+        info
+      };
+    })
+
+    await Promise.all(locationPromises).then(locations => this.setState({ locations }));
+    if(!this.state.locations[0].info.category) {
+      await this.setState({ errorShown:true });
+
+      setTimeout(async () => {
+        await this.setState({ errorShown: false });
+      }, 2000);
+    }
   }
 
   handleInput = (e) => {
@@ -207,6 +215,12 @@ class App extends Component {
           locations={ shownLocations }
           triggerInfo={this.triggerInfo}
         />
+        {this.state.errorShown && (
+          <div className='notification'>
+              <p>Error Loading Location Info From Foursquare</p>
+              <p>Please Try Again</p>  
+          </div>
+        )}
       </div>
     );
   }

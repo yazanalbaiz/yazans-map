@@ -20,4 +20,5 @@ export const getInfo = (venue) => (
 
             return info;
         })
+        .catch(err => err)
 );
