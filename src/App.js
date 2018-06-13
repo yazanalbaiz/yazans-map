@@ -3,6 +3,8 @@ import React, { Component } from 'react';
 import { stack as Menu } from 'react-burger-menu';
 import escapeRegExp from 'escape-string-regexp';
 import sortBy from 'sort-by'; //To sort arrays
+//APIs
+import * as FoursquareAPI from './FoursquareAPI';
 //Componenets
 import Map from './components/Map';
 import MarkerFilter from './components/MarkerFilter';
@@ -18,6 +20,23 @@ import restaurant from './icons/restaurant.svg';
 
 
 class App extends Component {
+  componentWillMount = () => {
+    //I'm using async/await syntax to ensure that the promise resovles
+    const locationPromises = this.state.locations.map(async loc => {
+      let info;
+
+      await FoursquareAPI.getInfo(loc)
+        .then(res => info = res);
+      console.log(info)
+      return {
+        ...loc,
+        info
+      };
+    })
+
+    Promise.all(locationPromises).then(locations => this.setState({ locations }));
+  }
+  
   state = {
     query: '',
     locations: [
