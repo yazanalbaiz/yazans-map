@@ -12,6 +12,7 @@
     "react-media": "^1.8.0",
     "react-notification-system": "^0.2.17",
     "react-scripts": "1.1.4",
+    "react-tippy": "^1.2.2",
     "sort-by": "^1.2.0"
   },
   "scripts": {

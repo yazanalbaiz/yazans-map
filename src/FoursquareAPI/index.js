@@ -11,6 +11,7 @@ export const getInfo = (venue) => (
             const infoFull = res.response.venues[0];
             
             const info = {
+                id: infoFull.id,
                 category: infoFull.categories[0].name,
                 address: infoFull.location.address,
                 postal: infoFull.location.postalCode,

@@ -1,7 +1,10 @@
 import React, { Component } from 'react';
 import { GoogleMap, Marker, InfoWindow, withScriptjs, withGoogleMap } from 'react-google-maps';
+import { Tooltip } from 'react-tippy';
 
 import './style.css'
+import 'react-tippy/dist/tippy.css'
+
 
 class Map extends Component {
 
@@ -11,7 +14,7 @@ class Map extends Component {
       return (
         <GoogleMap
             defaultZoom={17}
-            defaultCenter={{ lat: 52.363960, lng: 4.882854 }}
+            defaultCenter={{ lat: 52.364476, lng: 4.883294 }}
         >
             { locations.map(location => (
                 <Marker 
@@ -27,7 +30,40 @@ class Map extends Component {
                     {location.infoShown && (
                         <InfoWindow className='info-window'>
                             <div className='info-container'>
-                                <h4 className='info-header'>{ location.name }</h4>
+                                <h4 className='info-header'>
+                                    {typeof location.info !== 'string' && (
+                                        <Tooltip
+                                            title={`${ location.name }'s Foursquare Page`}
+                                            position='top'
+                                            size='small'
+                                            className='tooltip'
+                                        >
+                                            <a className='info-link' href={`https://foursquare.com/v/${location.info.id}`} target="_blank">{ location.name }</a>
+                                        </Tooltip>
+                                    )}
+                                    {typeof location.info === 'string' && (
+                                       <span>{ location.name }</span>
+                                    )}
+                                </h4>
+                                {(typeof location.info !== 'string' &&location.info.category.length) > 0 && (
+                                    <div className='info-container'>
+                                        <p className='info-outer'>
+                                            Category: <span className='info-inner'>{location.info.category}</span>
+                                        </p>
+                                        <p className='info-outer'>
+                                            Address: <span className='info-inner'>{location.info.address}</span>
+                                        </p>
+                                        <p className='info-outer'>
+                                            Postal Code: <span className='info-inner'>{location.info.postal}</span>
+                                        </p>
+                                        <p className='info-outer'>
+                                            City: <span className='info-inner'>{location.info.city}</span>
+                                        </p>
+                                        <p className='info-outer'>
+                                            Country: <span className='info-inner'>{location.info.country}</span>
+                                        </p>
+                                    </div>
+                                )}
                             </div>
                         </InfoWindow>
                     )}

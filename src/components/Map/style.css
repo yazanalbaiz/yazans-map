@@ -2,3 +2,25 @@
     font-family: 'Cairo', sans-serif;
     color: rgb(210, 147, 147);
 }
+
+.info-link {
+    text-decoration: none;
+    color: rgb(210, 147, 147);
+    border: none;
+}
+
+.info-link:visited {
+    color: rgb(210, 147, 147);
+}
+
+.info-link:hover {
+    color: rgb(0, 0, 0);
+    cursor: pointer;
+}
+
+.info-outer {
+    color: rgb(194, 0, 0);
+}
+.info-inner {
+    color: black;
+}

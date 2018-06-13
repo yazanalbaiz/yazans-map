@@ -29,6 +29,7 @@ class App extends Component {
         name: 'Pathé City Cinema',
         infoShown: true,
         info: {
+          id: '',
           category: '',
           address: '',
           postal: '',
@@ -43,6 +44,7 @@ class App extends Component {
         name: 'The Bulldog Palace',
         infoShown: true,
         info:  {
+          id: '',
           category: '',
           address: '',
           postal: '',
@@ -57,6 +59,7 @@ class App extends Component {
         name: 'Kwakman Bakery',
         infoShown: true,
         info:  {
+          id: '',
           category: '',
           address: '',
           postal: '',
@@ -71,6 +74,7 @@ class App extends Component {
         name: 'Hampshire American Hotel',
         infoShown: true,
         info:  {
+          id: '',
           category: '',
           address: '',
           postal: '',
@@ -85,6 +89,7 @@ class App extends Component {
         name: 'Tandoor Indian Restaurant',
         infoShown: true,
         info:  {
+          id: '',
           category: '',
           address: '',
           postal: '',
@@ -104,6 +109,7 @@ class App extends Component {
 
       await FoursquareAPI.getInfo(loc)
         .then(res => info = res);
+      if(typeof info.category === 'undefined') info = '';
       return {
         ...loc,
         info
@@ -111,7 +117,8 @@ class App extends Component {
     })
 
     await Promise.all(locationPromises).then(locations => this.setState({ locations }));
-    if(!this.state.locations[0].info.category) {
+    //Shows the Error notification if there's an error
+    if(typeof this.state.locations[0].info === 'string') {
       await this.setState({ errorShown:true });
 
       setTimeout(async () => {
@@ -215,6 +222,7 @@ class App extends Component {
           locations={ shownLocations }
           triggerInfo={this.triggerInfo}
         />
+        {/* API Error Handling Shown to User as per rubric */}
         {this.state.errorShown && (
           <div className='notification'>
               <p>Error Loading Location Info From Foursquare</p>
