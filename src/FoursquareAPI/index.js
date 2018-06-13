@@ -7,5 +7,17 @@ const URL = `https://api.foursquare.com/v2/venues/search?client_id=${API_KEY}&cl
 export const getInfo = (venue) => (
     fetch(`${URL}&intent=match&name=${venue.name}&ll=${venue.position.lat},${venue.position.lng}`)
         .then(data => data.json())
-        .then(info => info.response.venues[0].location)
+        .then(res => {
+            const infoFull = res.response.venues[0];
+            
+            const info = {
+                category: infoFull.categories[0].name,
+                address: infoFull.location.address,
+                postal: infoFull.location.postalCode,
+                city: infoFull.location.city,
+                country: infoFull.location.country
+              };
+
+            return info;
+        })
 );

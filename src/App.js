@@ -27,7 +27,6 @@ class App extends Component {
 
       await FoursquareAPI.getInfo(loc)
         .then(res => info = res);
-      console.log(info)
       return {
         ...loc,
         info
@@ -44,7 +43,13 @@ class App extends Component {
         id: 0,
         name: 'Pathé City Cinema',
         infoShown: true,
-        info: null,
+        info: {
+          category: '',
+          address: '',
+          postal: '',
+          city: '',
+          country: ''
+        },
         position: { lat:  52.363420, lng: 4.883704 },
         icon: movie
       },
@@ -52,7 +57,13 @@ class App extends Component {
         id: 1,
         name: 'The Bulldog Palace',
         infoShown: true,
-        info: null,
+        info:  {
+          category: '',
+          address: '',
+          postal: '',
+          city: '',
+          country: ''
+        },
         position: { lat: 52.364021, lng: 4.883311 },
         icon: cafe
       },
@@ -60,7 +71,13 @@ class App extends Component {
         id: 2,
         name: 'Kwakman Bakery',
         infoShown: true,
-        info: null,
+        info:  {
+          category: '',
+          address: '',
+          postal: '',
+          city: '',
+          country: ''
+        },
         position: { lat: 52.364829,  lng: 4.884283 },
         icon: cake
       },
@@ -68,7 +85,13 @@ class App extends Component {
         id: 3,
         name: 'Hampshire American Hotel',
         infoShown: true,
-        info: null,
+        info:  {
+          category: '',
+          address: '',
+          postal: '',
+          city: '',
+          country: ''
+        },
         position: { lat: 52.363886, lng: 4.881300 },
         icon: hotel
       },
@@ -76,7 +99,13 @@ class App extends Component {
         id: 4,
         name: 'Tandoor Indian Restaurant',
         infoShown: true,
-        info: null,
+        info:  {
+          category: '',
+          address: '',
+          postal: '',
+          city: '',
+          country: ''
+        },
         position: { lat: 52.364974, lng: 4.883029 },
         icon: restaurant
       }

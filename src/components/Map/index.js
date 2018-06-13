@@ -25,8 +25,10 @@ class Map extends Component {
                     defaultAnimation='bounce'
                 >
                     {location.infoShown && (
-                        <InfoWindow>
-                            <h4 className='info-header'>{ location.name }</h4>
+                        <InfoWindow className='info-window'>
+                            <div className='info-container'>
+                                <h4 className='info-header'>{ location.name }</h4>
+                            </div>
                         </InfoWindow>
                     )}
                 </Marker>
