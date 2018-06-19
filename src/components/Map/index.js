@@ -1,3 +1,5 @@
+/* global google */
+
 import React, { Component } from 'react';
 import { GoogleMap, Marker, InfoWindow, withScriptjs, withGoogleMap } from 'react-google-maps';
 import { Tooltip } from 'react-tippy';
@@ -14,7 +16,7 @@ class Map extends Component {
       return (
         <GoogleMap
             defaultZoom={17}
-            defaultCenter={{ lat: 52.364476, lng: 4.883294 }}
+            defaultCenter={{ lat: 52.364433, lng: 4.883026}}
         >
             { locations.map(location => (
                 <Marker 
@@ -25,7 +27,8 @@ class Map extends Component {
                     key={ location.id } 
                     position={ location.position }
                     onClick={() => triggerInfo(location) }
-                    defaultAnimation='bounce'
+                    defaultAnimation= {google.maps.Animation.DROP}
+                    animation={google.maps.Animation.DROP}
                 >
                     {location.infoShown && (
                         <InfoWindow className='info-window'>
@@ -45,7 +48,7 @@ class Map extends Component {
                                        <span>{ location.name }</span>
                                     )}
                                 </h4>
-                                {(typeof location.info !== 'string' &&location.info.category.length) > 0 && (
+                                {(typeof location.info !== 'string' && location.info.category.length) > 0 && (
                                     <div className='info-container'>
                                         <p className='info-outer'>
                                             Category: <span className='info-inner'>{location.info.category}</span>

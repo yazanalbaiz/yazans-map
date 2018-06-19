@@ -21,13 +21,15 @@ import restaurant from './icons/restaurant.svg';
 
 class App extends Component {
   state = {
+    menuOpen: true,
+    mapHeight: window.innerHeight * 0.89,
     errorShown: false,
     query: '',
     locations: [
       {
         id: 0,
         name: 'Pathé City Cinema',
-        infoShown: true,
+        infoShown: false,
         info: {
           id: '',
           category: '',
@@ -42,7 +44,7 @@ class App extends Component {
       {
         id: 1,
         name: 'The Bulldog Palace',
-        infoShown: true,
+        infoShown: false,
         info:  {
           id: '',
           category: '',
@@ -57,7 +59,7 @@ class App extends Component {
       {
         id: 2,
         name: 'Kwakman Bakery',
-        infoShown: true,
+        infoShown: false,
         info:  {
           id: '',
           category: '',
@@ -72,7 +74,7 @@ class App extends Component {
       {
         id: 3,
         name: 'Hampshire American Hotel',
-        infoShown: true,
+        infoShown: false,
         info:  {
           id: '',
           category: '',
@@ -87,7 +89,7 @@ class App extends Component {
       {
         id: 4,
         name: 'Tandoor Indian Restaurant',
-        infoShown: true,
+        infoShown: false,
         info:  {
           id: '',
           category: '',
@@ -167,7 +169,7 @@ class App extends Component {
   }
 
   render() {
-    const { locations, query } = this.state;
+    const { locations, query, menuOpen } = this.state;
 
     let shownLocations;
 
@@ -180,13 +182,27 @@ class App extends Component {
 
     return (
       <div className='container'>
-        <div className='box-1'>
+        <nav className='nav'>
           <Menu 
             noOverlay 
-            isOpen={true} 
+            /**
+             *  TO-DO:
+             * - Make it open
+             * 
+             * 
+             *  */
+            isOpen={menuOpen} 
             disableOverlayClick={true} 
-            styles={ MapStyles }
+            styles={ {
+              ...MapStyles,
+              bmBurgerButton: {
+                ...MapStyles.bmBurgerButton,
+                left: menuOpen ? '25%' : '24px'
+              }
+            } }
             customCrossIcon={ false }
+            onStateChange={() => {this.setState({ menuOpen: !menuOpen})
+          ;console.log(menuOpen);}}
           >
             <li className='bm-header'>Yazan's Leidseplein Bangers</li>
             <li className='bm-input'>
@@ -211,17 +227,18 @@ class App extends Component {
               ))}
             </ul>
           </Menu>
-        </div>
-        
+        </nav>
+        <div className='content'>
         <Map
           loadingElement={ <div style={{height: '100%'}}/> }
-          containerElement={ <main style={{height: '615px', width: '77%'}}/> }
+          containerElement={ <main style={{height: `${this.state.mapHeight}px`}}/> }
           mapElement={ <div style={{height: '100%'}}/> }
           googleMapURL='https://maps.googleapis.com/maps/api/js?key=AIzaSyDLX20hiAwtHZ60qd92XrTZE_Kz8TqRJ40&v=3'
-          className='box-2'
           locations={ shownLocations }
           triggerInfo={this.triggerInfo}
         />
+        </div>
+       
         {/* API Error Handling Shown to User as per rubric */}
         {this.state.errorShown && (
           <div className='notification'>

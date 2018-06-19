@@ -3,8 +3,8 @@ export const MapStyles = {
       position: 'fixed',
       width: '21px',
       height: '15px',
-      left: '24px',
-      top: '24px'
+      top: '24px',
+      transition: 'all 0.5s ease-in-out'
     },
     bmBurgerBars: {
       background: '#373a47'
