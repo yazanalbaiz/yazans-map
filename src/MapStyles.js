@@ -19,7 +19,8 @@ export const MapStyles = {
     bmMenu: {
       background: 'rgb(210, 147, 147)',
       fontSize: '1.15em',
-      overflow: 'inherit'
+      overflow: 'inherit',
+      width: '100%'
     },
     bmMorphShape: {
       fill: '#373a47'

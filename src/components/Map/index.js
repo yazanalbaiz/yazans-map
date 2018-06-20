@@ -22,8 +22,10 @@ class Map extends Component {
                 <Marker 
                     icon={{
                         url: location.icon,
-                        color:  'rgb(210, 147, 147)'
+                        color:  'rgb(210, 147, 147)',
+                        alt: `${location.info.category} Icon`
                     }}
+                    alt={`${location.info.category} Icon`}
                     key={ location.id } 
                     position={ location.position }
                     onClick={() => triggerInfo(location) }
@@ -50,6 +52,15 @@ class Map extends Component {
                                 </h4>
                                 {(typeof location.info !== 'string' && location.info.category.length) > 0 && (
                                     <div className='info-container'>
+                                        {location.photo.length > 0 && (
+                                            <img 
+                                                height='200'
+                                                width='200'
+                                                src={location.photo} 
+                                                //alt attribute for a11y accessabile images
+                                                alt={!location.photo.includes('available') ? location.name+' image' : 'Placeholder Image'}
+                                            />
+                                        )}
                                         <p className='info-outer'>
                                             Category: <span className='info-inner'>{location.info.category}</span>
                                         </p>
@@ -58,12 +69,6 @@ class Map extends Component {
                                         </p>
                                         <p className='info-outer'>
                                             Postal Code: <span className='info-inner'>{location.info.postal}</span>
-                                        </p>
-                                        <p className='info-outer'>
-                                            City: <span className='info-inner'>{location.info.city}</span>
-                                        </p>
-                                        <p className='info-outer'>
-                                            Country: <span className='info-inner'>{location.info.country}</span>
                                         </p>
                                     </div>
                                 )}

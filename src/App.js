@@ -22,7 +22,8 @@ import restaurant from './icons/restaurant.svg';
 class App extends Component {
   state = {
     menuOpen: true,
-    errorShown: false,
+    infoError: false,
+    photoError: false,
     query: '',
     locations: [
       {
@@ -36,7 +37,8 @@ class App extends Component {
           postal: '',
         },
         position: { lat:  52.363420, lng: 4.883704 },
-        icon: movie
+        icon: movie,
+        photo: ''
       },
       {
         id: 1,
@@ -49,7 +51,8 @@ class App extends Component {
           postal: '',
         },
         position: { lat: 52.364021, lng: 4.883311 },
-        icon: cafe
+        icon: cafe,
+        photo: ''
       },
       {
         id: 2,
@@ -62,7 +65,8 @@ class App extends Component {
           postal: '',
         },
         position: { lat: 52.364829,  lng: 4.884283 },
-        icon: cake
+        icon: cake,
+        photo: ''
       },
       {
         id: 3,
@@ -75,7 +79,8 @@ class App extends Component {
           postal: '',
         },
         position: { lat: 52.363886, lng: 4.881300 },
-        icon: hotel
+        icon: hotel,
+        photo: ''
       },
       {
         id: 4,
@@ -88,7 +93,8 @@ class App extends Component {
           postal: '',
         },
         position: { lat: 52.364974, lng: 4.883029 },
-        icon: restaurant
+        icon: restaurant,
+        photo: ''
       }
     ]
   }
@@ -97,28 +103,44 @@ class App extends Component {
     //I'm using async/await syntax to ensure that the promise resovles
     const locationPromises = this.state.locations.map(async loc => {
       let info;
+      let photo;
 
       await FoursquareAPI.getInfo(loc)
         .then(res => info = res);
+      //Error Handling for info fetch
       if(typeof info.category === 'undefined') info = '';
+
+      await FoursquareAPI.getPhoto(info.id)
+        .then(res => photo = res)
+      //Error Handling for photo fetch
+      if(!photo) photo = '';
       return {
         ...loc,
-        info
+        info,
+        photo
       };
     })
 
     await Promise.all(locationPromises).then(locations => this.setState({ locations }));
     //Shows the Error notification if there's an error
-    if(typeof this.state.locations[0].info === 'string') {
-      await this.setState({ errorShown:true });
+    if(typeof this.state.locations[0].info === 'string' || this.state.locations[0].photo.length === 0) {
+      await this.setState({ infoError:true });
 
       setTimeout(async () => {
-        await this.setState({ errorShown: false });
+        await this.setState({ infoError: false });
+      }, 2000);
+    }
+
+    if (this.state.locations[0].photo.length === 0) {
+      await this.setState({ photoError: true });
+
+      setTimeout(async () => {
+        await this.setState({ photoError: false });
       }, 2000);
     }
 
 
-    FoursquareAPI.getPhoto(this.state.locations[0])
+    FoursquareAPI.getPhoto(this.state.locations)
   }
 
   handleInput = (e) => {
@@ -235,9 +257,15 @@ class App extends Component {
         </div>
        
         {/* API Error Handling Shown to User as per rubric */}
-        {this.state.errorShown && (
+        {this.state.infoError && (
           <div className='notification'>
               <p>Error Loading Location Info From Foursquare</p>
+              <p>Please Try Again</p>  
+          </div>
+        )}
+        {this.state.photoError && (
+          <div className='notification'>
+              <p>Error Loading Location Photo From Foursquare</p>
               <p>Please Try Again</p>  
           </div>
         )}
