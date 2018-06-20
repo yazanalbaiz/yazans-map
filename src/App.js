@@ -22,7 +22,6 @@ import restaurant from './icons/restaurant.svg';
 class App extends Component {
   state = {
     menuOpen: true,
-    mapHeight: window.innerHeight * 0.89,
     errorShown: false,
     query: '',
     locations: [
@@ -35,8 +34,6 @@ class App extends Component {
           category: '',
           address: '',
           postal: '',
-          city: '',
-          country: ''
         },
         position: { lat:  52.363420, lng: 4.883704 },
         icon: movie
@@ -50,8 +47,6 @@ class App extends Component {
           category: '',
           address: '',
           postal: '',
-          city: '',
-          country: ''
         },
         position: { lat: 52.364021, lng: 4.883311 },
         icon: cafe
@@ -65,8 +60,6 @@ class App extends Component {
           category: '',
           address: '',
           postal: '',
-          city: '',
-          country: ''
         },
         position: { lat: 52.364829,  lng: 4.884283 },
         icon: cake
@@ -80,8 +73,6 @@ class App extends Component {
           category: '',
           address: '',
           postal: '',
-          city: '',
-          country: ''
         },
         position: { lat: 52.363886, lng: 4.881300 },
         icon: hotel
@@ -95,8 +86,6 @@ class App extends Component {
           category: '',
           address: '',
           postal: '',
-          city: '',
-          country: ''
         },
         position: { lat: 52.364974, lng: 4.883029 },
         icon: restaurant
@@ -127,6 +116,9 @@ class App extends Component {
         await this.setState({ errorShown: false });
       }, 2000);
     }
+
+
+    FoursquareAPI.getPhoto(this.state.locations[0])
   }
 
   handleInput = (e) => {
@@ -170,7 +162,6 @@ class App extends Component {
 
   render() {
     const { locations, query, menuOpen } = this.state;
-
     let shownLocations;
 
     if (query) {
@@ -182,29 +173,26 @@ class App extends Component {
 
     return (
       <div className='container'>
-        <nav className='nav'>
+      {/* Nav Bar for a11y semantics */}
+        <nav style={{height: '11%'}} className='nav'>
           <Menu 
             noOverlay 
-            /**
-             *  TO-DO:
-             * - Make it open
-             * 
-             * 
-             *  */
             isOpen={menuOpen} 
             disableOverlayClick={true} 
             styles={ {
               ...MapStyles,
               bmBurgerButton: {
                 ...MapStyles.bmBurgerButton,
-                left: menuOpen ? '25%' : '24px'
+                left: menuOpen ? '315.282px' : '24px'
               }
             } }
+            style={{width:'25%'}}
             customCrossIcon={ false }
-            onStateChange={() => {this.setState({ menuOpen: !menuOpen})
-          ;console.log(menuOpen);}}
+            onStateChange={() => this.setState({ menuOpen: !menuOpen})}
           >
-            <li className='bm-header'>Yazan's Leidseplein Bangers</li>
+            {menuOpen && (
+              <li className='bm-header'>Yazan's Leidseplein Bangers</li>
+            )}
             <li className='bm-input'>
               <MarkerFilter
                 query={ query }
@@ -227,16 +215,23 @@ class App extends Component {
               ))}
             </ul>
           </Menu>
+          {!menuOpen && (
+            <li className='bm-header nav-header'>Yazan's Leidseplein Bangers</li>
+          )}
         </nav>
-        <div className='content'>
-        <Map
-          loadingElement={ <div style={{height: '100%'}}/> }
-          containerElement={ <main style={{height: `${this.state.mapHeight}px`}}/> }
-          mapElement={ <div style={{height: '100%'}}/> }
-          googleMapURL='https://maps.googleapis.com/maps/api/js?key=AIzaSyDLX20hiAwtHZ60qd92XrTZE_Kz8TqRJ40&v=3'
-          locations={ shownLocations }
-          triggerInfo={this.triggerInfo}
-        />
+        <div className='content' style={{
+          width: menuOpen ? '77%' : '100%',
+          position: menuOpen ? 'relative' : '', 
+          left: '23%',
+        }}>
+          <Map
+            loadingElement={ <div style={{height: '100%'}}/> }
+            containerElement={ <main style={{height: `89vh`}}/> }
+            mapElement={ <div style={{height: '100%'}}/> }
+            googleMapURL='https://maps.googleapis.com/maps/api/js?key=AIzaSyDLX20hiAwtHZ60qd92XrTZE_Kz8TqRJ40&v=3'
+            locations={ shownLocations }
+            triggerInfo={this.triggerInfo}
+          />
         </div>
        
         {/* API Error Handling Shown to User as per rubric */}
