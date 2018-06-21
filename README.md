@@ -40,4 +40,5 @@ Click on a location on the list will show it's info.
 
 ## Attribution
 
-There are no attributions in this project.
+- Google for their Maps API.
+- Foursquare for their API.

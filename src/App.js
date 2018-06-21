@@ -21,6 +21,7 @@ import restaurant from './icons/restaurant.svg';
 
 class App extends Component {
   state = {
+    animation: 'google.maps.Animation.DROP',
     menuOpen: true,
     infoError: false,
     photoError: false,
@@ -38,7 +39,8 @@ class App extends Component {
         },
         position: { lat:  52.363420, lng: 4.883704 },
         icon: movie,
-        photo: ''
+        photo: '',
+        markerShown: true,
       },
       {
         id: 1,
@@ -52,7 +54,8 @@ class App extends Component {
         },
         position: { lat: 52.364021, lng: 4.883311 },
         icon: cafe,
-        photo: ''
+        photo: '',
+        markerShown: true,
       },
       {
         id: 2,
@@ -66,7 +69,8 @@ class App extends Component {
         },
         position: { lat: 52.364829,  lng: 4.884283 },
         icon: cake,
-        photo: ''
+        photo: '',
+        markerShown: true,
       },
       {
         id: 3,
@@ -80,7 +84,8 @@ class App extends Component {
         },
         position: { lat: 52.363886, lng: 4.881300 },
         icon: hotel,
-        photo: ''
+        photo: '',
+        markerShown: true,
       },
       {
         id: 4,
@@ -94,7 +99,8 @@ class App extends Component {
         },
         position: { lat: 52.364974, lng: 4.883029 },
         icon: restaurant,
-        photo: ''
+        photo: '',
+        markerShown: true,
       }
     ]
   }
@@ -121,7 +127,10 @@ class App extends Component {
       };
     })
 
-    await Promise.all(locationPromises).then(locations => this.setState({ locations }));
+    await Promise.all(locationPromises)
+      .then(locations => this.setState({ locations }))
+      //Foursquare API Catch as per the reviewer's notes
+      .catch(err => window.alert('Foursquare API Error:', err, '/n Try Again Later :('));
     //Shows the Error notification if there's an error
     if(typeof this.state.locations[0].info === 'string' || this.state.locations[0].photo.length === 0) {
       await this.setState({ infoError:true });
@@ -138,9 +147,14 @@ class App extends Component {
         await this.setState({ photoError: false });
       }, 2000);
     }
-
-
-    FoursquareAPI.getPhoto(this.state.locations)
+  }
+  //Binding gm_authFailure according to the reviewer
+  componentDidMount = () => {
+    window.gm_authFailure = this.gm_authFailure;
+  }
+  //Implementation of gm_authFailure according to the reviewer
+  gm_authFailure = () => {
+    window.alert('Google Maps Error! Try Agian Later!')
   }
 
   handleInput = (e) => {
@@ -159,27 +173,24 @@ class App extends Component {
 
     this.setState({ locations });
   }
+  //Animates and shows info
+  triggerListClick = async (location) => {
+    let locations = this.state.locations.map(loc => ({
+      ...loc,
+      markerShown: location.id === loc.id ? false : true
+    }))
 
-  triggerSoloInfo = (location) => {
-    const newLocation = {
-      ...location,
-      infoShown: true
-    };
+    await this.setState({ locations });
 
-    const cutLocation = this.state.locations.filter(loc => (
-      loc.id !== location.id
-    )).map(loc => (
-      {
+    window.setTimeout(async () => {
+      locations = this.state.locations.map(loc => ({
         ...loc,
-        infoShown: false
-      }
-    ));
+        markerShown: true,
+        infoShown: location.id === loc.id ? true : false
+      }));
 
-    const locations = cutLocation.concat(newLocation);
-
-    locations.sort(sortBy('id'));
-
-    this.setState({ locations });
+      await this.setState({ locations });
+    }, 25);
   }
 
   render() {
@@ -230,7 +241,10 @@ class App extends Component {
                   role='button' 
                   className='list-location'
                   key={ location.id }
-                  onClick={() => this.triggerSoloInfo(location)}
+                  onClick={() => {
+                    this.triggerListClick(location);
+                    // this.triggerSoloInfo(location);
+                  }}
                 >
                   { location.name }
                 </li>
@@ -253,6 +267,7 @@ class App extends Component {
             googleMapURL='https://maps.googleapis.com/maps/api/js?key=AIzaSyDLX20hiAwtHZ60qd92XrTZE_Kz8TqRJ40&v=3'
             locations={ shownLocations }
             triggerInfo={this.triggerInfo}
+            animation={this.state.animation}
           />
         </div>
        

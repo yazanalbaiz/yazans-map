@@ -1,4 +1,7 @@
+// eslint-disable-next-line
 /* global google */
+/* eslint no-eval: 0 */
+
 
 import React, { Component } from 'react';
 import { GoogleMap, Marker, InfoWindow, withScriptjs, withGoogleMap } from 'react-google-maps';
@@ -9,6 +12,9 @@ import 'react-tippy/dist/tippy.css'
 
 
 class Map extends Component {
+    state = {
+        animation: eval(this.props.animation),
+    }
 
     render() {
         const { locations, triggerInfo } = this.props;
@@ -19,7 +25,9 @@ class Map extends Component {
             defaultCenter={{ lat: 52.364433, lng: 4.883026}}
         >
             { locations.map(location => (
-                <Marker 
+                <div key={location.id}>
+                {location.markerShown && (
+                    <Marker 
                     icon={{
                         url: location.icon,
                         color:  'rgb(210, 147, 147)',
@@ -28,9 +36,10 @@ class Map extends Component {
                     alt={`${location.info.category} Icon`}
                     key={ location.id } 
                     position={ location.position }
-                    onClick={() => triggerInfo(location) }
-                    defaultAnimation= {google.maps.Animation.DROP}
-                    animation={google.maps.Animation.DROP}
+                    onClick={(e) => {
+                        triggerInfo(location);
+                    } }
+                    animation={this.state.animation}
                 >
                     {location.infoShown && (
                         <InfoWindow className='info-window'>
@@ -47,7 +56,7 @@ class Map extends Component {
                                         </Tooltip>
                                     )}
                                     {typeof location.info === 'string' && (
-                                       <span>{ location.name }</span>
+                                    <span>{ location.name }</span>
                                     )}
                                 </h4>
                                 {(typeof location.info !== 'string' && location.info.category.length) > 0 && (
@@ -76,6 +85,10 @@ class Map extends Component {
                         </InfoWindow>
                     )}
                 </Marker>
+                )}
+                    
+                </div>
+                
             ))}
         </GoogleMap>
       )
@@ -86,4 +99,5 @@ export default withScriptjs(withGoogleMap((props) =>
     <Map 
         locations={props.locations}
         triggerInfo={props.triggerInfo}
+        animation={props.animation}
     />));

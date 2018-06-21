@@ -21,7 +21,11 @@ export const getInfo = (venue) => (
 
             return info;
         })
-        .catch(err => err)
+         //Foursquare API Catch as per the reviewer's notes
+        .catch(err => {
+            window.alert('Foursquare API Error:', err, '/n Try Again Later :(');
+            return err;
+        })
 );
 
 export const getPhoto = (id) => {
@@ -32,7 +36,11 @@ export const getPhoto = (id) => {
             + res.response.photos.items[0].width 
             +'x'+res.response.photos.items[0].height
             +res.response.photos.items[0].suffix)
-        .catch(err => err);
+        .catch(err => {
+            //Foursquare API Catch as per the reviewer's notes
+            window.alert('Foursquare API Error:', err, '/n Try Again Later :(');
+            return err; 
+        });
     } else {
         return 'https://upload.wikimedia.org/wikipedia/commons/a/ac/No_image_available.svg'
     }
